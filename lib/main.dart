@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/Views/HomePage.dart';
+import 'package:super_market/Views/ProvidersPage/addProvider.dart';
 import 'package:super_market/Views/customersPages/addCreditToCustomer.dart';
 import 'package:super_market/Views/customersPages/addcustomer.dart';
 
@@ -70,6 +71,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         "/": (context) => Home(),
         "addCus": (context) => AddCustomer(),
+        "addPro": (context) => AddProvider(),
       },
     );
   }

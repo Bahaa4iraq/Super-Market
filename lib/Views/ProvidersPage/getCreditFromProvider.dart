@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
-class AddCreditToCustomer extends StatelessWidget {
-  AddCreditToCustomer({Key? key, required this.name}) : super(key: key);
+class GetCreditFromProvider extends StatelessWidget {
+  GetCreditFromProvider({Key? key, required this.name}) : super(key: key);
   final String name;
   TextEditingController price = TextEditingController();
   TextEditingController details = TextEditingController();
@@ -21,7 +21,7 @@ class AddCreditToCustomer extends StatelessWidget {
           elevation: 0,
           backgroundColor: UIColor.red,
           centerTitle: true,
-          title: Text("$nameصرف مبلغ لـ"),
+          title: Text("قبض مبلغ من $name"),
           leading: const SizedBox(),
           actions: [
             IconButton(
@@ -39,7 +39,7 @@ class AddCreditToCustomer extends StatelessWidget {
               child: Stack(
                 children: [
                   Positioned(
-                    top: -size.height * 0.86,
+                    top: -size.height * 0.87,
                     left: -size.width * 0.37,
                     child: Container(
                       padding: EdgeInsets.only(bottom: size.height * 0.10),
@@ -122,13 +122,13 @@ class AddCreditToCustomer extends StatelessWidget {
                           FocusScope.of(context).requestFocus(FocusNode());
                         },
                         child: Text(
-                          'أضافة وصل الصرف',
+                          'أضافة وصل قبض',
                           style: Theme.of(context).textTheme.headline3,
                         )),
                   )
                 ],
               ),
-            )
+            ),
           ]),
         ),
       ),

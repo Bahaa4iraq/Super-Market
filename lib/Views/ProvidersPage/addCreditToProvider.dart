@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
-class AddCreditToCustomer extends StatelessWidget {
-  AddCreditToCustomer({Key? key, required this.name}) : super(key: key);
+class AddCreditToProvider extends StatelessWidget {
+  AddCreditToProvider({Key? key, required this.name}) : super(key: key);
   final String name;
   TextEditingController price = TextEditingController();
   TextEditingController details = TextEditingController();

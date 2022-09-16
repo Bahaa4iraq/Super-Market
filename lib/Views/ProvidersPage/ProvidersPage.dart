@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:super_market/widgets/custemTextForm.dart';
-import 'package:super_market/widgets/customerCard.dart';
+import 'package:super_market/widgets/providerCard.dart';
 
 import '../../Constant/Colors.dart';
-import '../../Constant/constant.dart';
+import '../../widgets/customerCard.dart';
 
-class CustomerPage extends StatefulWidget {
-  CustomerPage({Key? key}) : super(key: key);
+class ProviderPage extends StatefulWidget {
+  ProviderPage({Key? key}) : super(key: key);
 
   @override
-  State<CustomerPage> createState() => _CustomerPageState();
+  State<ProviderPage> createState() => _ProviderPageState();
 }
 
-class _CustomerPageState extends State<CustomerPage> {
+class _ProviderPageState extends State<ProviderPage> {
   TextEditingController search = TextEditingController();
 
   List<String> res = [
-    "ahmed ali",
-    "bahaa hussien",
-    "sajad bahaa",
-    "Rokia hussien"
+    "محلات الانوار",
+    "مكتب المتين",
+    "محلات الشورجة",
+    "مكتب الاخوين"
   ];
+
   List<String> resSearch = [];
 
   @override
@@ -37,7 +37,7 @@ class _CustomerPageState extends State<CustomerPage> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, "addCus");
+                      Navigator.pushNamed(context, "addPro");
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -48,7 +48,7 @@ class _CustomerPageState extends State<CustomerPage> {
                           color: UIColor.red.withOpacity(0.9),
                           boxShadow: UIColor.shadow),
                       child: Text(
-                        "اضافة زبون",
+                        "اضافة مورد",
                         style: Theme.of(context).textTheme.headline4,
                       ),
                     ),
@@ -75,7 +75,7 @@ class _CustomerPageState extends State<CustomerPage> {
                             const EdgeInsets.only(top: 3, right: 10),
                         filled: true,
                         fillColor: UIColor.red.withOpacity(0.2),
-                        hintText: "بحث عن زبون",
+                        hintText: "بحث عن مورد",
                         hintTextDirection: TextDirection.rtl,
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
@@ -102,7 +102,7 @@ class _CustomerPageState extends State<CustomerPage> {
                 itemCount: search.text.isEmpty ? res.length : resSearch.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 3, crossAxisCount: 1),
-                itemBuilder: (BuildContext context, int i) => CustomerCard(
+                itemBuilder: (BuildContext context, int i) => ProviderCard(
                       name: search.text.isEmpty ? res[i] : resSearch[i],
                     )),
           ),

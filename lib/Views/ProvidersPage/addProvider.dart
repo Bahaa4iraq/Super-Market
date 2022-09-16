@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
-class AddCreditToCustomer extends StatelessWidget {
-  AddCreditToCustomer({Key? key, required this.name}) : super(key: key);
-  final String name;
-  TextEditingController price = TextEditingController();
-  TextEditingController details = TextEditingController();
+class AddProvider extends StatelessWidget {
+  AddProvider({Key? key}) : super(key: key);
+  TextEditingController name = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class AddCreditToCustomer extends StatelessWidget {
           elevation: 0,
           backgroundColor: UIColor.red,
           centerTitle: true,
-          title: Text("$nameصرف مبلغ لـ"),
+          title: const Text("اضافة مورد جدبد"),
           leading: const SizedBox(),
           actions: [
             IconButton(
@@ -39,7 +38,7 @@ class AddCreditToCustomer extends StatelessWidget {
               child: Stack(
                 children: [
                   Positioned(
-                    top: -size.height * 0.86,
+                    top: -size.height * 0.87,
                     left: -size.width * 0.37,
                     child: Container(
                       padding: EdgeInsets.only(bottom: size.height * 0.10),
@@ -63,7 +62,7 @@ class AddCreditToCustomer extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
                   Row(
@@ -73,14 +72,14 @@ class AddCreditToCustomer extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.7,
                         height: 50,
                         child: CustemTextForm(
-                          hint: "اكتب المبلغ",
-                          type: TextInputType.number,
-                          controller: price,
-                          icon: Icons.attach_money,
+                          hint: "اكتب اسم المورد",
+                          type: TextInputType.text,
+                          controller: name,
+                          icon: Icons.person,
                         ),
                       ),
                       Text(
-                        "المبلغ",
+                        "الاسم",
                         style: Theme.of(context).textTheme.headline3,
                       ),
                     ],
@@ -93,16 +92,16 @@ class AddCreditToCustomer extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.7,
-                        height: 200,
+                        height: 50,
                         child: CustemTextForm(
-                          hint: "التفاصيل",
-                          type: TextInputType.text,
-                          controller: details,
-                          icon: Icons.info,
+                          hint: "رقم هاتف المورد",
+                          type: TextInputType.number,
+                          controller: phone,
+                          icon: Icons.phone,
                         ),
                       ),
                       Text(
-                        "التفاصيل",
+                        "رقم الهاتف",
                         style: Theme.of(context).textTheme.headline3,
                       ),
                     ],
@@ -122,13 +121,13 @@ class AddCreditToCustomer extends StatelessWidget {
                           FocusScope.of(context).requestFocus(FocusNode());
                         },
                         child: Text(
-                          'أضافة وصل الصرف',
+                          'أضافة مورد',
                           style: Theme.of(context).textTheme.headline3,
                         )),
                   )
                 ],
               ),
-            )
+            ),
           ]),
         ),
       ),
