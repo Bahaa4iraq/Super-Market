@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Constant/Colors.dart';
-import '../widgets/outlyCard.dart';
+import '../../Constant/Colors.dart';
+import '../../widgets/outlyCard.dart';
 
 class OutlyPage extends StatelessWidget {
   OutlyPage({Key? key}) : super(key: key);
@@ -16,7 +16,9 @@ class OutlyPage extends StatelessWidget {
     return Column(
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "addOutly");
+          },
           child: Container(
             alignment: Alignment.center,
             margin: const EdgeInsets.symmetric(horizontal: 10),

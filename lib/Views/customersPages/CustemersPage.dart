@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:super_market/Model/customerModel.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 import 'package:super_market/widgets/customerCard.dart';
 
 import '../../Constant/Colors.dart';
 import '../../Constant/constant.dart';
+import '../../ViewModel/CustomerModelView.dart';
 
 class CustomerPage extends StatefulWidget {
   CustomerPage({Key? key}) : super(key: key);
@@ -15,17 +18,12 @@ class CustomerPage extends StatefulWidget {
 class _CustomerPageState extends State<CustomerPage> {
   TextEditingController search = TextEditingController();
 
-  List<String> res = [
-    "ahmed ali",
-    "bahaa hussien",
-    "sajad bahaa",
-    "Rokia hussien"
-  ];
   List<String> resSearch = [];
 
   @override
-  @override
   Widget build(BuildContext context) {
+    Provider.of<CustomerViewModel>(context).getCustomers();
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -58,15 +56,7 @@ class _CustomerPageState extends State<CustomerPage> {
                     height: 40,
                     width: MediaQuery.of(context).size.width * 0.65,
                     child: TextFormField(
-                      onChanged: (val) {
-                        setState(() {
-                          resSearch = res
-                              .where((element) => element
-                                  .toLowerCase()
-                                  .contains(val.toLowerCase()))
-                              .toList();
-                        });
-                      },
+                      onChanged: (val) {},
                       textDirection: TextDirection.rtl,
                       controller: search,
                       decoration: InputDecoration(
@@ -95,16 +85,18 @@ class _CustomerPageState extends State<CustomerPage> {
           const SizedBox(
             height: 15,
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.55,
-            child: GridView.builder(
-                itemCount: search.text.isEmpty ? res.length : resSearch.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 3, crossAxisCount: 1),
-                itemBuilder: (BuildContext context, int i) => CustomerCard(
-                      name: search.text.isEmpty ? res[i] : resSearch[i],
-                    )),
+          Consumer<CustomerViewModel>(
+            builder: (context, model, child) => SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.55,
+              child: GridView.builder(
+                  itemCount: model.custList.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 3, crossAxisCount: 1),
+                  itemBuilder: (BuildContext context, int i) => CustomerCard(
+                        list: model.custList[i],
+                      )),
+            ),
           ),
         ],
       ),

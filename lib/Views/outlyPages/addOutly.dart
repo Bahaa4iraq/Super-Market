@@ -4,9 +4,9 @@ import 'package:super_market/widgets/custemTextForm.dart';
 
 import '../../widgets/custemClipper.dart';
 
-class GetCreditFromProvider extends StatelessWidget {
-  GetCreditFromProvider({Key? key, required this.name}) : super(key: key);
-  final String name;
+class AddOutly extends StatelessWidget {
+  AddOutly({Key? key}) : super(key: key);
+  TextEditingController name = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController details = TextEditingController();
 
@@ -23,7 +23,7 @@ class GetCreditFromProvider extends StatelessWidget {
           elevation: 0,
           backgroundColor: UIColor.red,
           centerTitle: true,
-          title: Text("قبض مبلغ من $name"),
+          title: const Text("اضافة مصاريف "),
           leading: const SizedBox(),
           actions: [
             IconButton(
@@ -43,7 +43,7 @@ class GetCreditFromProvider extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
                   Row(
@@ -53,7 +53,29 @@ class GetCreditFromProvider extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.7,
                         height: 50,
                         child: CustemTextForm(
-                          hint: "اكتب المبلغ",
+                          hint: "نوع المصاريف",
+                          type: TextInputType.text,
+                          controller: name,
+                          icon: Icons.title,
+                        ),
+                      ),
+                      Text(
+                        "المصاريف",
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        height: 50,
+                        child: CustemTextForm(
+                          hint: "اكتب المبلغ هنا",
                           type: TextInputType.number,
                           controller: price,
                           icon: Icons.attach_money,
@@ -73,9 +95,9 @@ class GetCreditFromProvider extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.7,
-                        height: 200,
+                        height: 150,
                         child: CustemTextForm(
-                          hint: "التفاصيل",
+                          hint: "اكتب التفاصيل هنا",
                           type: TextInputType.text,
                           controller: details,
                           icon: Icons.info,
@@ -102,7 +124,7 @@ class GetCreditFromProvider extends StatelessWidget {
                           FocusScope.of(context).requestFocus(FocusNode());
                         },
                         child: Text(
-                          'أضافة وصل قبض',
+                          'أضافة ',
                           style: Theme.of(context).textTheme.headline3,
                         )),
                   )

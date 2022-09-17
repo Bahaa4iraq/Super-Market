@@ -1,6 +1,5 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:image_picker/image_picker.dart';
 
 class SqlDB {
   static Database? _db;
@@ -34,14 +33,51 @@ ALTER JOIN ADD COLMN("image" TEXT)
   onCreate(Database db, int version) async {
     Batch batch = db.batch();
     batch.execute('''
+CREATE TABLE "users" (
+  "id" INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,
+"name" TEXT NOT NULL ,
+"phone" TEXT ,
+"type" TEXT  NOT NULL
+)
+''');
+    batch.execute('''
+CREATE TABLE "money" (
+  "id" INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,
+"amount" INTEGER NOT NULL,
+"details" TEXT ,
+"user_id" INTEGER NOT NULL,
+"type" TEXT ,
+"data" TEXT ,
+"time" TEXT
+)
+''');
+    batch.execute('''
+CREATE TABLE "outly" (
+  "id" INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,
+"title" TEXT NOT NULL ,
+"amount" INTEGER NOT NULL,
+"details" TEXT ,
+"data" TEXT NOT NULL ,
+"time" TEXT NOT NULL
+)
+''');
+    batch.execute('''
 CREATE TABLE "items" (
   "id" INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,
 "name" TEXT NOT NULL ,
-"price" INTEGER NOT NULL,
-"image" TEXT
+"price1" INTEGER NOT NULL,
+"price2" TEXT 
+)
+''');
+    batch.execute('''
+CREATE TABLE "barcodes" (
+  "id" INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,
+"barcode" INTEGER NOT NULL ,
+"item_id" INTEGER NOT NULL
 )
 ''');
     batch.commit();
+    print("on crest +++++++++++++++++");
   }
 
   readData(String sql) async {
@@ -68,9 +104,9 @@ CREATE TABLE "items" (
     return res;
   }
 
-  get(String table) async {
+  get(String table, String? where, List<Object?>? list) async {
     Database? myDB = await db;
-    List<Map> res = await myDB!.query(table);
+    List<Map> res = await myDB!.query(table, where: where, whereArgs: list);
     return res;
   }
 

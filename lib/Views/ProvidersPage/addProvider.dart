@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
+import '../../widgets/custemClipper.dart';
+
 class AddProvider extends StatelessWidget {
   AddProvider({Key? key}) : super(key: key);
   TextEditingController name = TextEditingController();
@@ -34,31 +36,9 @@ class AddProvider extends StatelessWidget {
           child: Column(children: [
             SizedBox(
               width: size.width,
-              height: size.height * 0.12,
+              height: size.height * 0.1,
               child: Stack(
-                children: [
-                  Positioned(
-                    top: -size.height * 0.87,
-                    left: -size.width * 0.37,
-                    child: Container(
-                      padding: EdgeInsets.only(bottom: size.height * 0.10),
-                      alignment: Alignment.bottomCenter,
-                      width: size.width * 1.8,
-                      height: size.height,
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 8,
-                            offset: Offset(0, 1),
-                          )
-                        ],
-                        shape: BoxShape.circle,
-                        color: UIColor.red,
-                      ),
-                    ),
-                  ),
-                ],
+                children: const [CliperAbove()],
               ),
             ),
             Padding(

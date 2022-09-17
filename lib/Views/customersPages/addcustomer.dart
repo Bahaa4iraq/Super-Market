@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:super_market/Constant/Colors.dart';
+import 'package:super_market/ViewModel/CustomerModelView.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
+
+import '../../widgets/custemClipper.dart';
 
 class AddCustomer extends StatelessWidget {
   AddCustomer({Key? key}) : super(key: key);
-  TextEditingController name = TextEditingController();
-  TextEditingController phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -34,98 +35,81 @@ class AddCustomer extends StatelessWidget {
           child: Column(children: [
             SizedBox(
               width: size.width,
-              height: size.height * 0.12,
+              height: size.height * 0.1,
               child: Stack(
-                children: [
-                  Positioned(
-                    top: -size.height * 0.87,
-                    left: -size.width * 0.37,
-                    child: Container(
-                      padding: EdgeInsets.only(bottom: size.height * 0.10),
-                      alignment: Alignment.bottomCenter,
-                      width: size.width * 1.8,
-                      height: size.height,
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 8,
-                            offset: Offset(0, 1),
-                          )
-                        ],
-                        shape: BoxShape.circle,
-                        color: UIColor.red,
-                      ),
-                    ),
-                  ),
-                ],
+                children: const [CliperAbove()],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Consumer<CustomerViewModel>(
+                builder: ((context, model, child) {
+                  return Column(
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: 50,
+                            child: CustemTextForm(
+                              hint: "اكتب اسم الزبون",
+                              type: TextInputType.text,
+                              controller: model.name,
+                              icon: Icons.person,
+                            ),
+                          ),
+                          Text(
+                            "الاسم",
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: 50,
+                            child: CustemTextForm(
+                              hint: "رقم هاتف الزبون",
+                              type: TextInputType.number,
+                              controller: model.phone,
+                              icon: Icons.phone,
+                            ),
+                          ),
+                          Text(
+                            "رقم الهاتف",
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
                         height: 50,
-                        child: CustemTextForm(
-                          hint: "اكتب اسم الزبون",
-                          type: TextInputType.text,
-                          controller: name,
-                          icon: Icons.person,
-                        ),
-                      ),
-                      Text(
-                        "الاسم",
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
+                        width: 200,
+                        child: OutlinedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 8,
+                              primary: UIColor.red,
+                            ),
+                            onPressed: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              model.addNewCustomer(context);
+                            },
+                            child: Text(
+                              'أضافة زبون',
+                              style: Theme.of(context).textTheme.headline3,
+                            )),
+                      )
                     ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        height: 50,
-                        child: CustemTextForm(
-                          hint: "رقم هاتف الزبون",
-                          type: TextInputType.number,
-                          controller: phone,
-                          icon: Icons.phone,
-                        ),
-                      ),
-                      Text(
-                        "رقم الهاتف",
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: 200,
-                    child: OutlinedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 8,
-                          primary: UIColor.red,
-                        ),
-                        onPressed: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
-                        child: Text(
-                          'أضافة زبون',
-                          style: Theme.of(context).textTheme.headline3,
-                        )),
-                  )
-                ],
+                  );
+                }),
               ),
             ),
           ]),

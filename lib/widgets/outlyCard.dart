@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:super_market/Views/outlyPages/editOutly.dart';
 import '../Constant/Colors.dart';
 
 class OutlyCard extends StatelessWidget {
@@ -35,13 +36,63 @@ class OutlyCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => EditOutly()));
+                      },
                       icon: Icon(
                         Icons.edit,
                         color: UIColor.blue,
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                                  backgroundColor: UIColor.white,
+                                  title: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.warning_rounded,
+                                        color: UIColor.red,
+                                      ),
+                                      const Text(
+                                        "تنبيه",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  content: const Text(
+                                    "هل انت متأكد من الحذف",
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  actionsAlignment: MainAxisAlignment.start,
+                                  actions: [
+                                    OutlinedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: UIColor.red),
+                                        onPressed: () {},
+                                        child: Text(
+                                          "موافق",
+                                          style:
+                                              TextStyle(color: UIColor.white),
+                                        )),
+                                    OutlinedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: UIColor.white),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "الغاء",
+                                          style: TextStyle(color: Colors.black),
+                                        )),
+                                  ],
+                                ));
+                      },
                       icon: Icon(
                         Icons.delete,
                         color: UIColor.red,
