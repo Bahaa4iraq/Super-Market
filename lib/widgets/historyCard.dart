@@ -1,14 +1,14 @@
-import 'dart:ui';
-
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../Constant/Colors.dart';
+import '../controllers/CustomerViewModel/CustomerModelView.dart';
 
 class HistoryCard extends StatelessWidget {
   HistoryCard({Key? key, required this.list}) : super(key: key);
   final Map list;
-
+  CustomerController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     bool isPay = list['type'] == "صرف" ? true : false;
@@ -25,7 +25,7 @@ class HistoryCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-                top: -75,
+                top: -90,
                 right: 125,
                 child: Container(
                   width: 150,
@@ -53,13 +53,17 @@ class HistoryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
+                    onPressed: () {
+                      controller.delPaymentFromUser(context, list['id']);
+                    },
+                    icon: Icon(
                       Icons.delete,
+                      color: UIColor.red.withOpacity(0.8),
                     )),
                 Text(
-                  "${list['amount']}",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  controller.myFormat.format(list['amount']),
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   "${list['type']}",

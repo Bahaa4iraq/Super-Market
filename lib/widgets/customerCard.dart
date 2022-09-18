@@ -1,97 +1,143 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:super_market/Views/customersPages/DtailesOfCustomerPage.dart';
 import 'package:super_market/Views/customersPages/addCreditToCustomer.dart';
 import 'package:super_market/Views/customersPages/getcreditFromCustomer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Constant/Colors.dart';
-import '../ViewModel/CustomerModelView.dart';
+import '../Views/customersPages/editCustomer.dart';
+import '../controllers/CustomerViewModel/CustomerModelView.dart';
 
-class CustomerCard extends StatelessWidget {
+class CustomerCard extends StatefulWidget {
   const CustomerCard({Key? key, required this.list}) : super(key: key);
   final Map list;
 
   @override
-  Widget build(BuildContext context) {
-    //Provider.of<CustomerViewModel>(context).getHitory(list['id']);
+  State<CustomerCard> createState() => _CustomerCardState();
+}
 
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: UIColor.white,
-          border: Border.all(color: Colors.black, width: 0.75),
-          boxShadow: UIColor.shadow),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "${list['id']}",
-                style: Theme.of(context).textTheme.headline3,
+class _CustomerCardState extends State<CustomerCard> {
+  CustomerController controller = Get.find();
+  int t = 0;
+
+  getTotal() async {
+    t = await controller.getHitory(widget.list['id']);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getTotal();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => HistoryPage(user: widget.list)));
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: UIColor.white,
+            border: Border.all(color: Colors.black, width: 0.75),
+            boxShadow: UIColor.shadow),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buttonCard(UIColor.red.withOpacity(0.9), "صرف", () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                AddCreditToCustomer(user: widget.list)));
+                  }),
+                  buttonCard(UIColor.blue.withOpacity(0.9), "قبض", () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                GetCreditFromCustomer(user: widget.list)));
+                  }),
+                ],
               ),
-              Column(
+            ),
+            Expanded(
+              flex: 3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${list['name']}",
+                    "${widget.list['name']}",
                     style: Theme.of(context).textTheme.headline3,
                   ),
                   Text(
-                    "${list['phone']}",
+                    "${widget.list['phone']}",
                     style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 14,
                         fontWeight: FontWeight.bold),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      iconCard(Colors.greenAccent, Icons.call, () async {
+                        var url = "tel:${widget.list['phone']}";
+                        if (await canLaunchUrl(Uri.parse(url))) {
+                          await launchUrl(Uri.parse(url));
+                        }
+                      }),
+                      iconCard(UIColor.grey.withOpacity(0.9), Icons.edit, () {
+                        Get.to(() => EditCustomer(
+                              user: widget.list,
+                            ));
+                      }),
+                      iconCard(UIColor.red.withOpacity(0.9), Icons.delete, () {
+                        controller.delUser(context, widget.list['id']);
+                      }),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
-          Expanded(
-              child: Row(
-            children: [
-              buttonCard(context, UIColor.moore.withOpacity(0.9), "السجل", () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => HistoryPage(user: list)));
-              }),
-              buttonCard(context, UIColor.blue.withOpacity(0.9), "قبض", () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => GetCreditFromCustomer(user: list)));
-              }),
-              buttonCard(context, UIColor.red.withOpacity(0.9), "صرف", () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => AddCreditToCustomer(user: list)));
-              }),
-            ],
-          )),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  buttonCard(
-      BuildContext context, Color color, String txt, void Function()? fun) {
-    return Expanded(
-        child: InkWell(
+  buttonCard(Color color, String title, void Function()? fun) {
+    return InkWell(
       onTap: fun,
       child: Container(
-        margin: const EdgeInsets.all(10),
         alignment: Alignment.center,
         decoration: BoxDecoration(
+            boxShadow: UIColor.shadow,
             color: color,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: UIColor.shadow),
+            borderRadius: BorderRadius.circular(10)),
         child: Text(
-          txt,
+          title,
           style: Theme.of(context).textTheme.headline4,
         ),
       ),
-    ));
+    );
+  }
+
+  iconCard(Color color, IconData icon, void Function()? fun) {
+    return IconButton(
+      onPressed: fun,
+      icon: Icon(icon),
+      color: color,
+    );
   }
 }

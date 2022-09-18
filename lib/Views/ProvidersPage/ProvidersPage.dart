@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:super_market/widgets/providerCard.dart';
-
+import 'package:get/get.dart';
+import 'package:super_market/Views/ProvidersPage/addProvider.dart';
 import '../../Constant/Colors.dart';
-import '../../widgets/customerCard.dart';
+import '../../controllers/ProviderViewModel/providerViewModel.dart';
+import '../../widgets/providerCard.dart';
 
 class ProviderPage extends StatefulWidget {
   ProviderPage({Key? key}) : super(key: key);
 
   @override
-  State<ProviderPage> createState() => _ProviderPageState();
+  State<ProviderPage> createState() => _ProviderPage();
 }
 
-class _ProviderPageState extends State<ProviderPage> {
-  TextEditingController search = TextEditingController();
+class _ProviderPage extends State<ProviderPage> {
+  ProviderController controller = Get.find();
 
-  List<String> res = [
-    "محلات الانوار",
-    "مكتب المتين",
-    "محلات الشورجة",
-    "مكتب الاخوين"
-  ];
-
-  List<String> resSearch = [];
-
-  @override
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -37,7 +28,7 @@ class _ProviderPageState extends State<ProviderPage> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, "addPro");
+                      Get.to(() => AddProvider());
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -57,36 +48,39 @@ class _ProviderPageState extends State<ProviderPage> {
                 SizedBox(
                     height: 40,
                     width: MediaQuery.of(context).size.width * 0.65,
-                    child: TextFormField(
-                      onChanged: (val) {
-                        setState(() {
-                          resSearch = res
-                              .where((element) => element
-                                  .toLowerCase()
-                                  .contains(val.toLowerCase()))
-                              .toList();
-                        });
-                      },
-                      textDirection: TextDirection.rtl,
-                      controller: search,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        contentPadding:
-                            const EdgeInsets.only(top: 3, right: 10),
-                        filled: true,
-                        fillColor: UIColor.red.withOpacity(0.2),
-                        hintText: "بحث عن مورد",
-                        hintTextDirection: TextDirection.rtl,
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            borderSide:
-                                BorderSide(color: UIColor.red, width: 1)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            borderSide:
-                                BorderSide(color: UIColor.red, width: 2)),
+                    child: GetX<ProviderController>(
+                      builder: (controller) => TextFormField(
+                        onChanged: (val) {
+                          controller.search.value.addListener(() {});
+                        },
+                        textDirection: TextDirection.rtl,
+                        controller: controller.search.value,
+                        decoration: InputDecoration(
+                          hintText: "بحث عن مورد",
+                          prefixIcon: IconButton(
+                              onPressed: () {
+                                controller.search.value.clear();
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                              },
+                              icon:
+                                  const Icon(Icons.close, color: Colors.black)),
+                          contentPadding:
+                              const EdgeInsets.only(top: 3, right: 10),
+                          filled: true,
+                          fillColor: UIColor.red.withOpacity(0.2),
+                          hintTextDirection: TextDirection.rtl,
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              borderSide:
+                                  BorderSide(color: UIColor.red, width: 1)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              borderSide:
+                                  BorderSide(color: UIColor.red, width: 2)),
+                        ),
                       ),
                     )),
               ],
@@ -98,13 +92,25 @@ class _ProviderPageState extends State<ProviderPage> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.55,
-            child: GridView.builder(
-                itemCount: search.text.isEmpty ? res.length : resSearch.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 3, crossAxisCount: 1),
-                itemBuilder: (BuildContext context, int i) => ProviderCard(
-                      name: search.text.isEmpty ? res[i] : resSearch[i],
-                    )),
+            child: GetBuilder<ProviderController>(
+              builder: (controller) {
+                return FutureBuilder(
+                  future: controller.search.value.text.isEmpty
+                      ? controller.getProviders()
+                      : controller.getSearchProviders(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) =>
+                      GridView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: controller.proviList.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio: 3, crossAxisCount: 1),
+                          itemBuilder: (BuildContext context, int i) =>
+                              ProviderCard(list: controller.proviList[i])),
+                );
+              },
+            ),
           ),
         ],
       ),

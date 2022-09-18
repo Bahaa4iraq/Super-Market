@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:super_market/Model/customerModel.dart';
-import 'package:super_market/widgets/custemTextForm.dart';
+import 'package:get/get.dart';
 import 'package:super_market/widgets/customerCard.dart';
 
 import '../../Constant/Colors.dart';
-import '../../Constant/constant.dart';
-import '../../ViewModel/CustomerModelView.dart';
+import '../../controllers/CustomerViewModel/CustomerModelView.dart';
 
 class CustomerPage extends StatefulWidget {
   CustomerPage({Key? key}) : super(key: key);
@@ -16,14 +13,10 @@ class CustomerPage extends StatefulWidget {
 }
 
 class _CustomerPageState extends State<CustomerPage> {
-  TextEditingController search = TextEditingController();
-
-  List<String> resSearch = [];
+  CustomerController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CustomerViewModel>(context).getCustomers();
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -55,28 +48,39 @@ class _CustomerPageState extends State<CustomerPage> {
                 SizedBox(
                     height: 40,
                     width: MediaQuery.of(context).size.width * 0.65,
-                    child: TextFormField(
-                      onChanged: (val) {},
-                      textDirection: TextDirection.rtl,
-                      controller: search,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        contentPadding:
-                            const EdgeInsets.only(top: 3, right: 10),
-                        filled: true,
-                        fillColor: UIColor.red.withOpacity(0.2),
-                        hintText: "بحث عن زبون",
-                        hintTextDirection: TextDirection.rtl,
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            borderSide:
-                                BorderSide(color: UIColor.red, width: 1)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            borderSide:
-                                BorderSide(color: UIColor.red, width: 2)),
+                    child: GetX<CustomerController>(
+                      builder: (controller) => TextFormField(
+                        onChanged: (val) {
+                          controller.search.value.addListener(() {});
+                        },
+                        textDirection: TextDirection.rtl,
+                        controller: controller.search.value,
+                        decoration: InputDecoration(
+                          hintText: "بحث عن زبون",
+                          prefixIcon: IconButton(
+                              onPressed: () {
+                                controller.search.value.clear();
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                              },
+                              icon:
+                                  const Icon(Icons.close, color: Colors.black)),
+                          contentPadding:
+                              const EdgeInsets.only(top: 3, right: 10),
+                          filled: true,
+                          fillColor: UIColor.red.withOpacity(0.2),
+                          hintTextDirection: TextDirection.rtl,
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              borderSide:
+                                  BorderSide(color: UIColor.red, width: 1)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              borderSide:
+                                  BorderSide(color: UIColor.red, width: 2)),
+                        ),
                       ),
                     )),
               ],
@@ -85,17 +89,27 @@ class _CustomerPageState extends State<CustomerPage> {
           const SizedBox(
             height: 15,
           ),
-          Consumer<CustomerViewModel>(
-            builder: (context, model, child) => SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.55,
-              child: GridView.builder(
-                  itemCount: model.custList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 3, crossAxisCount: 1),
-                  itemBuilder: (BuildContext context, int i) => CustomerCard(
-                        list: model.custList[i],
-                      )),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.55,
+            child: GetBuilder<CustomerController>(
+              builder: (controller) {
+                return FutureBuilder(
+                  future: controller.search.value.text.isEmpty
+                      ? controller.getCustomers()
+                      : controller.getSearchCustomers(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) =>
+                      GridView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: controller.custList.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio: 3, crossAxisCount: 1),
+                          itemBuilder: (BuildContext context, int i) =>
+                              CustomerCard(list: controller.custList[i])),
+                );
+              },
             ),
           ),
         ],

@@ -3,13 +3,26 @@ import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
-import '../../controllers/ProviderViewModel/providerViewModel.dart';
+import '../../controllers/CustomerViewModel/CustomerModelView.dart';
 import '../../widgets/custemClipper.dart';
 
-class AddProvider extends StatelessWidget {
-  AddProvider({Key? key}) : super(key: key);
+class EditCustomer extends StatefulWidget {
+  const EditCustomer({Key? key, required this.user}) : super(key: key);
 
-  final ProviderController controller = Get.find();
+  final Map user;
+  @override
+  State<EditCustomer> createState() => _EditCustomerState();
+}
+
+class _EditCustomerState extends State<EditCustomer> {
+  CustomerController controller = Get.find();
+  @override
+  void initState() {
+    super.initState();
+    controller.name.text = widget.user['name'];
+    controller.phone.text = widget.user['phone'];
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -22,7 +35,16 @@ class AddProvider extends StatelessWidget {
           elevation: 0,
           backgroundColor: UIColor.red,
           centerTitle: true,
-          title: const Text("اضافة مورد جدبد"),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('${widget.user['name']}'),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text("تعديل معلومات"),
+            ],
+          ),
           leading: const SizedBox(),
           actions: [
             IconButton(
@@ -59,7 +81,7 @@ class AddProvider extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.7,
                           height: 50,
                           child: CustemTextForm(
-                            hint: "اكتب اسم المورد",
+                            hint: "اكتب اسم الزبون",
                             type: TextInputType.text,
                             controller: controller.name,
                             icon: Icons.person,
@@ -80,7 +102,7 @@ class AddProvider extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.7,
                           height: 50,
                           child: CustemTextForm(
-                            hint: "رقم هاتف المورد",
+                            hint: "رقم هاتف الزبون",
                             type: TextInputType.number,
                             controller: controller.phone,
                             icon: Icons.phone,
@@ -104,10 +126,11 @@ class AddProvider extends StatelessWidget {
                           ),
                           onPressed: () {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            controller.addNewProvider(context);
+                            controller.updateUserInfo(
+                                context, widget.user['id']);
                           },
                           child: Text(
-                            'أضافة مورد',
+                            'تعديل',
                             style: Theme.of(context).textTheme.headline3,
                           )),
                     )

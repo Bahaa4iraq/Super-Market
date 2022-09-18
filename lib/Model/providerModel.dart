@@ -1,16 +1,16 @@
 import 'package:super_market/DataBase/sqlDB.dart';
 
-class CustomerModel {
+class ProviderModel {
   SqlDB sqlDB = SqlDB();
 
-  Future addNewCustomer(Map<String, Object?> data) async {
+  Future addNewProvider(Map<String, Object?> data) async {
     int res = await sqlDB.post("users", data);
 
     return res;
   }
 
-  Future getAllCustomer() async {
-    List<Map> res = await sqlDB.get("users", " type = ? ", ["customer"]);
+  Future getAllProvider() async {
+    List<Map> res = await sqlDB.get("users", " type = ? ", ["provider"]);
     return res;
   }
 
@@ -37,7 +37,7 @@ class CustomerModel {
 
   Future search(String search) async {
     List<Map> res = await sqlDB.readData('''SELECT * FROM 'users' WHERE
- name LIKE '%$search%' AND type='customer' ''');
+ name LIKE '%$search%' AND type='provider' ''');
     return res;
   }
 

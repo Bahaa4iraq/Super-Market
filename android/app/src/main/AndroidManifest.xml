@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.super_market">
+    <queries>
+      <!-- permission to makes calls -->
+          <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+          </intent>
+    </queries>
    <application
         android:label="super_market"
         android:name="${applicationName}"

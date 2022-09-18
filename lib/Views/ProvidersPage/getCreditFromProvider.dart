@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
+import '../../controllers/ProviderViewModel/providerViewModel.dart';
 import '../../widgets/custemClipper.dart';
 
 class GetCreditFromProvider extends StatelessWidget {
-  GetCreditFromProvider({Key? key, required this.name}) : super(key: key);
-  final String name;
-  TextEditingController price = TextEditingController();
-  TextEditingController details = TextEditingController();
-
+  GetCreditFromProvider({Key? key, required this.user}) : super(key: key);
+  final Map user;
+  final ProviderController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -23,7 +23,17 @@ class GetCreditFromProvider extends StatelessWidget {
           elevation: 0,
           backgroundColor: UIColor.red,
           centerTitle: true,
-          title: Text("قبض مبلغ من $name"),
+          titleTextStyle: const TextStyle(fontSize: 16),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("${user['name']}"),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text("قبض مبلغ من "),
+            ],
+          ),
           leading: const SizedBox(),
           actions: [
             IconButton(
@@ -55,7 +65,7 @@ class GetCreditFromProvider extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "اكتب المبلغ",
                           type: TextInputType.number,
-                          controller: price,
+                          controller: controller.price,
                           icon: Icons.attach_money,
                         ),
                       ),
@@ -77,7 +87,7 @@ class GetCreditFromProvider extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "التفاصيل",
                           type: TextInputType.text,
-                          controller: details,
+                          controller: controller.details,
                           icon: Icons.info,
                         ),
                       ),
@@ -100,6 +110,7 @@ class GetCreditFromProvider extends StatelessWidget {
                         ),
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
+                          controller.getMoneyFromProvider(context, user['id']);
                         },
                         child: Text(
                           'أضافة وصل قبض',

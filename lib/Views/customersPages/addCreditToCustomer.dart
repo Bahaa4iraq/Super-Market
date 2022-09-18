@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
-import '../../ViewModel/addMoneyViewModel.dart';
+import '../../controllers/CustomerViewModel/CustomerModelView.dart';
 import '../../widgets/custemClipper.dart';
 
 class AddCreditToCustomer extends StatelessWidget {
   AddCreditToCustomer({Key? key, required this.user}) : super(key: key);
   final Map user;
-
+  CustomerController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return ChangeNotifierProvider(
-      create: (context) => AddMoneyCustomer(),
-      child: GestureDetector(
+    return GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
@@ -25,6 +23,7 @@ class AddCreditToCustomer extends StatelessWidget {
             elevation: 0,
             backgroundColor: UIColor.red,
             centerTitle: true,
+            titleTextStyle: TextStyle(fontSize: 16),
             title: Text("${user['name']}صرف مبلغ لـ"),
             leading: const SizedBox(),
             actions: [
@@ -46,79 +45,75 @@ class AddCreditToCustomer extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Consumer<AddMoneyCustomer>(
-                  builder: ((context, model, child) => Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                height: 50,
-                                child: CustemTextForm(
-                                  hint: "اكتب المبلغ",
-                                  type: TextInputType.number,
-                                  controller: model.price,
-                                  icon: Icons.attach_money,
-                                ),
-                              ),
-                              Text(
-                                "المبلغ",
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                            ],
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: 50,
+                          child: CustemTextForm(
+                            hint: "اكتب المبلغ",
+                            type: TextInputType.number,
+                            controller: controller.price,
+                            icon: Icons.attach_money,
                           ),
-                          const SizedBox(
-                            height: 20,
+                        ),
+                        Text(
+                          "المبلغ",
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: 200,
+                          child: CustemTextForm(
+                            hint: "التفاصيل",
+                            type: TextInputType.text,
+                            controller: controller.details,
+                            icon: Icons.info,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                height: 200,
-                                child: CustemTextForm(
-                                  hint: "التفاصيل",
-                                  type: TextInputType.text,
-                                  controller: model.details,
-                                  icon: Icons.info,
-                                ),
-                              ),
-                              Text(
-                                "التفاصيل",
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                            ],
+                        ),
+                        Text(
+                          "التفاصيل",
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: 200,
+                      child: OutlinedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8,
+                            primary: UIColor.red,
                           ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          SizedBox(
-                            height: 50,
-                            width: 200,
-                            child: OutlinedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 8,
-                                  primary: UIColor.red,
-                                ),
-                                onPressed: () {
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  model.addMoneyCustomer(context, user['id']);
-                                },
-                                child: Text(
-                                  'أضافة وصل الصرف',
-                                  style: Theme.of(context).textTheme.headline3,
-                                )),
-                          )
-                        ],
-                      )),
+                          onPressed: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            controller.addMoneyCustomer(context, user['id']);
+                          },
+                          child: Text(
+                            'أضافة',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline3,
+                          )),
+                    )
+                  ],
                 ),
               )
             ]),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
