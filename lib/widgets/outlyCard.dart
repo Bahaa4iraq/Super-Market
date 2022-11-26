@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:get/get.dart';
 import 'package:super_market/Views/outlyPages/editOutly.dart';
+import 'package:super_market/controllers/outlyController.dart';
 import '../Constant/Colors.dart';
 
 class OutlyCard extends StatelessWidget {
-  const OutlyCard({Key? key, required this.name}) : super(key: key);
-  final String name;
+  OutlyCard({Key? key, required this.outly}) : super(key: key);
+  final Map outly;
+
+  final OutlyController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +26,12 @@ class OutlyCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                name,
+                outly['title'],
                 style: Theme.of(context).textTheme.headline3,
               ),
-              const Text(
-                "65.000",
-                style: TextStyle(
+              Text(
+                controller.myFormat.format(outly['amount']),
+                style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
@@ -37,61 +41,20 @@ class OutlyCard extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => EditOutly()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => EditOutly(
+                                      outly: outly,
+                                    )));
                       },
                       icon: Icon(
                         Icons.edit,
                         color: UIColor.blue,
                       )),
                   IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                                  backgroundColor: UIColor.white,
-                                  title: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(
-                                        Icons.warning_rounded,
-                                        color: UIColor.red,
-                                      ),
-                                      const Text(
-                                        "تنبيه",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                  content: const Text(
-                                    "هل انت متأكد من الحذف",
-                                    textAlign: TextAlign.end,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  actionsAlignment: MainAxisAlignment.start,
-                                  actions: [
-                                    OutlinedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            primary: UIColor.red),
-                                        onPressed: () {},
-                                        child: Text(
-                                          "موافق",
-                                          style:
-                                              TextStyle(color: UIColor.white),
-                                        )),
-                                    OutlinedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            primary: UIColor.white),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          "الغاء",
-                                          style: TextStyle(color: Colors.black),
-                                        )),
-                                  ],
-                                ));
+                      onPressed: () async {
+                        await controller.delOutly(context, outly['id']);
                       },
                       icon: Icon(
                         Icons.delete,
@@ -101,14 +64,14 @@ class OutlyCard extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
-                    "07/04/2022",
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    outly['data'],
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   Text(
-                    "10:50 am",
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    outly['time'],
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
               )
@@ -128,9 +91,9 @@ class OutlyCard extends StatelessWidget {
               "التفاصيل",
               style: Theme.of(context).textTheme.headline3,
             ),
-            const Text(
-              "تلف 2 بطل حليب و كاسة روبة  تلف 2 بطل حليب و كاسة روب ",
-              style: TextStyle(fontSize: 14),
+            Text(
+              outly['details'],
+              style: const TextStyle(fontSize: 14),
             ),
           ]),
         ));

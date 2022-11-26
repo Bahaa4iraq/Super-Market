@@ -47,7 +47,7 @@ CREATE TABLE "money" (
 "details" TEXT ,
 "user_id" INTEGER NOT NULL,
 "type" TEXT ,
-"data" TEXT ,
+"date" TEXT ,
 "time" TEXT
 )
 ''');
@@ -58,26 +58,13 @@ CREATE TABLE "outly" (
 "amount" INTEGER NOT NULL,
 "details" TEXT ,
 "data" TEXT NOT NULL ,
+"total_date" TEXT ,
 "time" TEXT NOT NULL
 )
 ''');
-    batch.execute('''
-CREATE TABLE "items" (
-  "id" INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,
-"name" TEXT NOT NULL ,
-"price1" INTEGER NOT NULL,
-"price2" TEXT 
-)
-''');
-    batch.execute('''
-CREATE TABLE "barcodes" (
-  "id" INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,
-"barcode" INTEGER NOT NULL ,
-"item_id" INTEGER NOT NULL
-)
-''');
+
     batch.commit();
-    print("on crest +++++++++++++++++");
+    print("on creat +++++++++++++++++");
   }
 
   readData(String sql) async {

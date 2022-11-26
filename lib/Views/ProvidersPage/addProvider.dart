@@ -22,7 +22,7 @@ class AddProvider extends StatelessWidget {
           elevation: 0,
           backgroundColor: UIColor.red,
           centerTitle: true,
-          title: const Text("اضافة مورد جدبد"),
+          title: const Text("اضافة الشركة جدبد"),
           leading: const SizedBox(),
           actions: [
             IconButton(
@@ -59,7 +59,7 @@ class AddProvider extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.7,
                           height: 50,
                           child: CustemTextForm(
-                            hint: "اكتب اسم المورد",
+                            hint: "اكتب اسم الشركة",
                             type: TextInputType.text,
                             controller: controller.name,
                             icon: Icons.person,
@@ -80,7 +80,7 @@ class AddProvider extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.7,
                           height: 50,
                           child: CustemTextForm(
-                            hint: "رقم هاتف المورد",
+                            hint: "رقم هاتف شركة",
                             type: TextInputType.number,
                             controller: controller.phone,
                             icon: Icons.phone,
@@ -107,7 +107,7 @@ class AddProvider extends StatelessWidget {
                             controller.addNewProvider(context);
                           },
                           child: Text(
-                            'أضافة مورد',
+                            'أضافة شركة',
                             style: Theme.of(context).textTheme.headline3,
                           )),
                     )

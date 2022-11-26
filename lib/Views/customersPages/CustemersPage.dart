@@ -91,7 +91,7 @@ class _CustomerPageState extends State<CustomerPage> {
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.55,
+            height: MediaQuery.of(context).size.height * 0.58,
             child: GetBuilder<CustomerController>(
               builder: (controller) {
                 return FutureBuilder(

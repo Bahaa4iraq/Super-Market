@@ -36,7 +36,7 @@ class ProviderController extends GetxController {
         "details": details.text,
         "user_id": id,
         "type": "صرف",
-        "data": date,
+        "date": date,
         "time": time
       });
       if (res != 0) {
@@ -78,7 +78,7 @@ class ProviderController extends GetxController {
         "details": details.text,
         "user_id": id,
         "type": "قبض",
-        "data": date,
+        "date": date,
         "time": time
       });
       if (res != 0) {

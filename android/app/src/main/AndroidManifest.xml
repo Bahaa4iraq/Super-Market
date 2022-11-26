@@ -8,7 +8,7 @@
           </intent>
     </queries>
    <application
-        android:label="super_market"
+        android:label="حسابات البحر"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

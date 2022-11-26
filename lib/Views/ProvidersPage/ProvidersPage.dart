@@ -39,7 +39,7 @@ class _ProviderPage extends State<ProviderPage> {
                           color: UIColor.red.withOpacity(0.9),
                           boxShadow: UIColor.shadow),
                       child: Text(
-                        "اضافة مورد",
+                        "اضافة شركة",
                         style: Theme.of(context).textTheme.headline4,
                       ),
                     ),
@@ -56,7 +56,7 @@ class _ProviderPage extends State<ProviderPage> {
                         textDirection: TextDirection.rtl,
                         controller: controller.search.value,
                         decoration: InputDecoration(
-                          hintText: "بحث عن مورد",
+                          hintText: "بحث عن شركة",
                           prefixIcon: IconButton(
                               onPressed: () {
                                 controller.search.value.clear();
@@ -91,7 +91,7 @@ class _ProviderPage extends State<ProviderPage> {
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.55,
+            height: MediaQuery.of(context).size.height * 0.59,
             child: GetBuilder<ProviderController>(
               builder: (controller) {
                 return FutureBuilder(

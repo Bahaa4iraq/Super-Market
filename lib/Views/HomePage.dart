@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/Constant/constant.dart';
+import 'package:super_market/main.dart';
 import 'package:super_market/widgets/endDrawer.dart';
 import 'package:super_market/widgets/homeButton.dart';
 
 import '../widgets/custemClipper.dart';
+import 'Login.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -25,15 +28,36 @@ class _HomeState extends State<Home> {
       },
       child: Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  sharePref.clear();
+                  Get.to(() => const Login());
+                },
+                icon: Icon(
+                  Icons.logout,
+                  color: UIColor.white,
+                )),
             elevation: 0,
             backgroundColor: UIColor.red,
             centerTitle: true,
-            title: Text(
-              "سوبرماركت الانور",
-              style: Theme.of(context).textTheme.headline1,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'images/3.jpg',
+                  height: 50,
+                  width: 50,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "شركة البحر الدولية",
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ],
             ),
           ),
-          endDrawer: MyDrawer(),
           body: SingleChildScrollView(
             child: SafeArea(
                 child: Column(
@@ -44,32 +68,6 @@ class _HomeState extends State<Home> {
                   height: size.height * 0.1,
                   child: Stack(
                     children: const [CliperAbove()],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "شنو تحب تسوي اليوم",
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "بهاء",
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "مرحبا",
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                    ],
                   ),
                 ),
                 const SizedBox(
@@ -100,7 +98,7 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(
                     width: size.width,
-                    height: size.height * 0.62,
+                    height: size.height * 0.66,
                     child: SingleChildScrollView(child: pages[index])),
               ],
             )),

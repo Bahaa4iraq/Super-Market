@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
+import 'package:super_market/controllers/outlyController.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
 import '../../widgets/custemClipper.dart';
 
-class EditOutly extends StatelessWidget {
-  EditOutly({Key? key}) : super(key: key);
-  TextEditingController name = TextEditingController();
-  TextEditingController price = TextEditingController();
-  TextEditingController details = TextEditingController();
+class EditOutly extends StatefulWidget {
+  EditOutly({Key? key, required this.outly}) : super(key: key);
+  final Map outly;
+
+  @override
+  State<EditOutly> createState() => _EditOutlyState();
+}
+
+class _EditOutlyState extends State<EditOutly> {
+  final OutlyController controller = Get.find();
+  @override
+  void initState() {
+    super.initState();
+    controller.title.text = widget.outly['title'];
+    controller.amount.text = widget.outly['amount'].toString();
+
+    controller.details.text = widget.outly['details'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +70,7 @@ class EditOutly extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "نوع المصاريف",
                           type: TextInputType.text,
-                          controller: name,
+                          controller: controller.title,
                           icon: Icons.title,
                         ),
                       ),
@@ -77,7 +92,7 @@ class EditOutly extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "اكتب المبلغ هنا",
                           type: TextInputType.number,
-                          controller: price,
+                          controller: controller.amount,
                           icon: Icons.attach_money,
                         ),
                       ),
@@ -99,7 +114,7 @@ class EditOutly extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "اكتب التفاصيل هنا",
                           type: TextInputType.text,
-                          controller: details,
+                          controller: controller.details,
                           icon: Icons.info,
                         ),
                       ),
@@ -122,6 +137,7 @@ class EditOutly extends StatelessWidget {
                         ),
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
+                          controller.editOutly(context, widget.outly['id']);
                         },
                         child: Text(
                           'تعديل',

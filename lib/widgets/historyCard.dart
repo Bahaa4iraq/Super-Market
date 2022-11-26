@@ -108,7 +108,7 @@ class HistoryCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${list['data']}",
+                    "${list['date']}",
                   ),
                   Text(
                     "${list['time']}",

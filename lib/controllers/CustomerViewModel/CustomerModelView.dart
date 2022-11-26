@@ -36,7 +36,7 @@ class CustomerController extends GetxController {
         "details": details.text,
         "user_id": id,
         "type": "صرف",
-        "data": date,
+        "date": date,
         "time": time
       });
       if (res != 0) {
@@ -78,7 +78,7 @@ class CustomerController extends GetxController {
         "details": details.text,
         "user_id": id,
         "type": "قبض",
-        "data": date,
+        "date": date,
         "time": time
       });
       if (res != 0) {
@@ -171,6 +171,12 @@ class CustomerController extends GetxController {
     update();
 
     return total.value;
+  }
+
+  Future getTotal(int id) async {
+    List<Map> res = await model.getTotal(id);
+
+    return res;
   }
 
   Future delPaymentFromUser(BuildContext context, int id) async {

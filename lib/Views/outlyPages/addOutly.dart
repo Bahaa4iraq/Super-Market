@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
+import 'package:super_market/controllers/outlyController.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
 import '../../widgets/custemClipper.dart';
 
 class AddOutly extends StatelessWidget {
   AddOutly({Key? key}) : super(key: key);
-  TextEditingController name = TextEditingController();
-  TextEditingController price = TextEditingController();
-  TextEditingController details = TextEditingController();
+  final OutlyController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class AddOutly extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "نوع المصاريف",
                           type: TextInputType.text,
-                          controller: name,
+                          controller: controller.title,
                           icon: Icons.title,
                         ),
                       ),
@@ -77,7 +77,7 @@ class AddOutly extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "اكتب المبلغ هنا",
                           type: TextInputType.number,
-                          controller: price,
+                          controller: controller.amount,
                           icon: Icons.attach_money,
                         ),
                       ),
@@ -99,7 +99,7 @@ class AddOutly extends StatelessWidget {
                         child: CustemTextForm(
                           hint: "اكتب التفاصيل هنا",
                           type: TextInputType.text,
-                          controller: details,
+                          controller: controller.details,
                           icon: Icons.info,
                         ),
                       ),
@@ -122,6 +122,7 @@ class AddOutly extends StatelessWidget {
                         ),
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
+                          controller.addOutly(context);
                         },
                         child: Text(
                           'أضافة ',

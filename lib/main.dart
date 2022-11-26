@@ -7,8 +7,15 @@ import 'package:super_market/Views/HomePage.dart';
 import 'package:super_market/Views/ProvidersPage/addProvider.dart';
 import 'package:super_market/Views/customersPages/addcustomer.dart';
 import 'package:super_market/Views/outlyPages/addOutly.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+import 'Views/Login.dart';
+
+late SharedPreferences sharePref;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  sharePref = await SharedPreferences.getInstance();
   runApp(MyApp());
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -72,7 +79,8 @@ class _MyAppState extends State<MyApp> {
       initialBinding: MyBindings(),
       initialRoute: "/",
       routes: {
-        "/": (context) => Home(),
+        "/": (context) =>
+            sharePref.getString("name") == null ? const Login() : Home(),
         "addCus": (context) => AddCustomer(),
         "addPro": (context) => AddProvider(),
         "addOutly": (context) => AddOutly(),

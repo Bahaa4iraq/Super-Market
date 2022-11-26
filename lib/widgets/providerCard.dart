@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../Constant/Colors.dart';
 import '../Views/ProvidersPage/getCreditFromProvider.dart';
-import '../Views/customersPages/editCustomer.dart';
 import '../controllers/ProviderViewModel/providerViewModel.dart';
 
 class ProviderCard extends StatefulWidget {

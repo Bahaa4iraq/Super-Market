@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
+import 'package:super_market/Constant/validator.dart';
 import 'package:super_market/widgets/custemTextForm.dart';
 
 import '../../controllers/CustomerViewModel/CustomerModelView.dart';
@@ -59,12 +60,13 @@ class AddCustomer extends StatelessWidget {
                           height: 50,
                           child: CustemTextForm(
                             hint: "اكتب اسم الزبون",
+                            validator: (val) => validatorText(val!, 40, 3),
                             type: TextInputType.text,
                             controller: controller.name,
                             icon: Icons.person,
                           ),
                         ),
-                        Text(
+                        const Text(
                           "الاسم",
                         ),
                       ],
@@ -85,7 +87,7 @@ class AddCustomer extends StatelessWidget {
                             icon: Icons.phone,
                           ),
                         ),
-                        Text(
+                        const Text(
                           "رقم الهاتف",
                         ),
                       ],

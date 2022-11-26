@@ -8,17 +8,20 @@ class CustemTextForm extends StatelessWidget {
       required this.controller,
       required this.icon,
       required this.type,
-      required this.hint})
+      required this.hint,
+      this.validator})
       : super(key: key);
   final TextEditingController controller;
   final IconData icon;
   final TextInputType type;
   final String hint;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       textDirection: TextDirection.rtl,
+      validator: validator,
       expands: true,
       minLines: null,
       maxLines: null,

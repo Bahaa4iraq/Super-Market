@@ -9,6 +9,12 @@ class CustomerModel {
     return res;
   }
 
+  Future getTotal(int id) async {
+    List<Map> res = await sqlDB.readData(''' SELECT SUM(amount) FROM 'money'
+     WHERE user_id='$id' ''');
+    return res;
+  }
+
   Future getAllCustomer() async {
     List<Map> res = await sqlDB.get("users", " type = ? ", ["customer"]);
     return res;

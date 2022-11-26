@@ -6,6 +6,7 @@ import 'package:super_market/Views/customersPages/getcreditFromCustomer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Constant/Colors.dart';
+import '../Model/customerModel.dart';
 import '../Views/customersPages/editCustomer.dart';
 import '../controllers/CustomerViewModel/CustomerModelView.dart';
 
@@ -18,21 +19,19 @@ class CustomerCard extends StatefulWidget {
 }
 
 class _CustomerCardState extends State<CustomerCard> {
-  CustomerController controller = Get.find();
-  int t = 0;
+  CustomerModel model = CustomerModel();
+  int tot = 0;
+  CustomerController controller = Get.put(CustomerController());
+  getTotalOF() async {
+    List<Map> res = await model.getTotal(widget.list['id']);
 
-  getTotal() async {
-    t = await controller.getHitory(widget.list['id']);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getTotal();
+    tot = res[0]['SUM(amount)'] == null ? 0 : res[0]['SUM(amount)'];
   }
 
   @override
   Widget build(BuildContext context) {
+    getTotalOF();
+
     return InkWell(
       onTap: () {
         Navigator.push(context,
@@ -44,7 +43,7 @@ class _CustomerCardState extends State<CustomerCard> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: UIColor.white,
-            border: Border.all(color: Colors.black, width: 0.75),
+            //border: Border.all(color: Colors.black, width: 0.75),
             boxShadow: UIColor.shadow),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,14 +54,14 @@ class _CustomerCardState extends State<CustomerCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buttonCard(UIColor.red.withOpacity(0.9), "صرف", () {
+                  buttonCard(UIColor.red.withOpacity(0.9), "بيع", () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (_) =>
                                 AddCreditToCustomer(user: widget.list)));
                   }),
-                  buttonCard(UIColor.blue.withOpacity(0.9), "قبض", () {
+                  buttonCard(UIColor.blue.withOpacity(0.9), "تسديد", () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -77,16 +76,34 @@ class _CustomerCardState extends State<CustomerCard> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "${widget.list['name']}",
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  Text(
-                    "${widget.list['phone']}",
-                    style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          controller.myFormat.format(tot),
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${widget.list['name']}",
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            Text(
+                              "${widget.list['phone']}",
+                              style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
