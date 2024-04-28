@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SqlDB {
   static Database? _db;
@@ -13,11 +17,25 @@ class SqlDB {
   }
 
   initial() async {
-    String dataPath = await getDatabasesPath();
-    String path = join(dataPath, "AppDB.db");
+    Directory? appDocDir = await getExternalStorageDirectory();
+    // String dataPath = await getDatabasesPath();
+    String path = join(appDocDir!.path, "AppDB.db");
     Database db = await openDatabase(path,
         onCreate: onCreate, version: 1, onUpgrade: onUpgrade);
     return db;
+  }
+
+  backUpDataBase() async {
+    String dataPath = await getDatabasesPath();
+    List tables = ["users", "money", "outly"];
+    String path = join(dataPath, "AppDB1.db");
+    Database db = await openDatabase(path,
+        onCreate: onCreate, version: 1, onUpgrade: onUpgrade);
+    List<Map> result = await db.rawQuery('SELECT * FROM users');
+    String data = json.encode(result);
+    File file = File('backup.txt');
+    file.writeAsString(data);
+    print(file.path);
   }
 
   Future<void> onUpgrade(Database db, int oldVersion, int newVersion) async {

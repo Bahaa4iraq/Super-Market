@@ -28,4 +28,12 @@ class TotalController extends GetxController {
     totalOfDayReport.clear();
     totalOfDayReport.addAll(res);
   }
+
+  setVacuBackup(String date) async {
+    var res = await model.setBackUpVacuum(date);
+  }
+
+  setVacuRestore(String date) async {
+    var res = await model.setRestoreVacuum(date);
+  }
 }

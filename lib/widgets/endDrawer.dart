@@ -1,10 +1,33 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:super_market/Constant/Colors.dart';
 import 'package:super_market/DataBase/sqlDB.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:super_market/controllers/totalController.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   MyDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
   SqlDB sqlDB = SqlDB();
+  TotalController controller = Get.put(TotalController());
+  String appDocPath = "";
+
+  Future getPath() async {
+    Directory? appDocDir = await getExternalStorageDirectory();
+    setState(() {
+      appDocPath = appDocDir!.path;
+    });
+    print(appDocPath);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -27,9 +50,9 @@ class MyDrawer extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
               child: Text(
-                "بهاء حسين",
+                appDocPath,
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 11,
                   color: UIColor.white,
                 ),
               ),
@@ -37,9 +60,11 @@ class MyDrawer extends StatelessWidget {
           ),
           IconButton(
               onPressed: () async {
-                sqlDB.deleteDB();
+                await getPath();
+                await controller.setVacuBackup(appDocPath);
+                // sqlDB.deleteDB();
               },
-              icon: Icon(Icons.delete))
+              icon: Icon(Icons.backup)),
         ],
       )),
     );

@@ -40,24 +40,12 @@ class _HomeState extends State<Home> {
             elevation: 0,
             backgroundColor: UIColor.red,
             centerTitle: true,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'images/3.jpg',
-                  height: 50,
-                  width: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "شركة البحر الدولية",
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-              ],
+            title: Text(
+              "علاء البديري للعقار",
+              style: Theme.of(context).textTheme.headline1,
             ),
           ),
+          //  endDrawer: MyDrawer(),
           body: SingleChildScrollView(
             child: SafeArea(
                 child: Column(

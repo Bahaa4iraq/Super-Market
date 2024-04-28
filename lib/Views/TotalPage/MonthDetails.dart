@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:super_market/Constant/Colors.dart';
-import 'package:super_market/controllers/outlyController.dart';
-import 'package:super_market/widgets/custemTextForm.dart';
 
 import '../../controllers/totalController.dart';
 import '../../widgets/custemClipper.dart';

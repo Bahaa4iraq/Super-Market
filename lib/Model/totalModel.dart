@@ -13,7 +13,7 @@ class TotalModel {
   Future getOutlaysOfMonth(String date) async {
     List<Map> res =
         await sqlDB.readData(''' SELECT data,SUM(amount) FROM 'outly'
-        GROUP BY 'data' 
+        where total_date='$date' GROUP BY 'data'  
      ''');
     return res;
   }
@@ -23,5 +23,23 @@ class TotalModel {
         where data='$date' 
      ''');
     return res;
+  }
+
+  Future setBackUpVacuum(String date) async {
+    List<Map> res =
+        await sqlDB.readData(''' VACUUM main INTO '$date/chinook_backup.db'
+     ''');
+    return res;
+  }
+
+  Future setRestoreVacuum(String date) async {
+    List<Map> res =
+        await sqlDB.readData(''' VACUUM '$date/chinook_backup.db'  INTO main
+     ''');
+    return res;
+  }
+
+  void backUpData() async {
+    await sqlDB.backUpDataBase();
   }
 }

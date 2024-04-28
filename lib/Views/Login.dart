@@ -28,12 +28,13 @@ class _LoginState extends State<Login> {
                 child: Column(children: [
                   Container(
                     margin: const EdgeInsets.only(bottom: 0, top: 50),
-                    width: 300,
+                    width: double.infinity,
                     height: 300,
                     child: const Image(
                       image: AssetImage(
-                        'images/3.jpg',
+                        'images/2.JPG',
                       ),
+                      fit: BoxFit.fill,
                     ),
                   ),
                   Container(

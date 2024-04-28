@@ -21,6 +21,7 @@ class TotalPage extends StatelessWidget {
                     crossAxisCount: 1, childAspectRatio: 4),
                 itemBuilder: (context, int i) => InkWell(
                   onTap: () {
+                    print(controller.outlyReport[i]);
                     Get.to(() => MonthDetails(
                         date: controller.outlyReport[i]['total_date']));
                   },

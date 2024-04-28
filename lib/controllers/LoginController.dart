@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../main.dart';
 
 class LoginController extends GetxController {
-  String userName = "عبد الله";
+  String userName = "ahmed622";
   String passWord = "Aa123123";
   TextEditingController userNameController = TextEditingController();
   TextEditingController passWordController = TextEditingController();
